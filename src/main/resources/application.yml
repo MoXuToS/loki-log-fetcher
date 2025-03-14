@@ -1,0 +1,10 @@
+loki:
+  address: http://localhost:3100
+  query:
+    system: system
+    env: env
+    application: backend-app
+# Максимум 5000, loki не позволяет вытащить больше
+    batchSize: 100
+    from: '2025-03-14 07:00:00'
+    end: '2025-03-14 21:00:00'
