@@ -22,4 +22,9 @@ public class TimeService {
         return instant.atZone(ZoneId.of("Europe/Moscow")).toLocalDateTime();
     }
 
+    public static long localDateTimeToNanos(LocalDateTime dateTime) {
+        ZoneId zone = ZoneId.of("Europe/Moscow");
+        return dateTime.atZone(zone).toInstant().getEpochSecond() * 1_000_000_000L;
+    }
+
 }

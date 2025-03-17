@@ -3,6 +3,7 @@ package ru.loki.fetcher.dto;
 import lombok.Builder;
 import lombok.Data;
 import ru.loki.fetcher.config.LokiRequestDTOConfig;
+import ru.loki.fetcher.service.TimeService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -49,11 +50,10 @@ public class LokiRequestDTO {
      */
     public String getQueryString() {
         return String.format(
-                "{system=\"%s\", env=\"%s\", container=\"%s\", pod=~\"%s\"}",
+                "{system=\"%s\", env=\"%s\", container=\"%s\", pod=~\".*\"}",
                 this.getSystem(),
                 this.getEnv(),
-                this.getApplication(),
-                this.getPodPattern()
+                this.getApplication()
         );
     }
 
@@ -63,7 +63,7 @@ public class LokiRequestDTO {
      * @return количество секунд с 1970-01-01T00:00:00Z с учетом системной временной Moscow
      */
     public long getStartAsUnix() {
-        return this.startTime.atZone(ZoneId.of("Europe/Moscow")).toEpochSecond();
+        return TimeService.localDateTimeToNanos(this.startTime);
     }
 
     /**
@@ -72,6 +72,6 @@ public class LokiRequestDTO {
      * @return количество секунд с 1970-01-01T00:00:00Z с учетом системной Moscow
      */
     public long getEndAsUnix() {
-        return this.endTime.atZone(ZoneId.of("Europe/Moscow")).toEpochSecond();
+        return TimeService.localDateTimeToNanos(this.endTime);
     }
 }
