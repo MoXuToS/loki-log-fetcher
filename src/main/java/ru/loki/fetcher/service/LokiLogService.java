@@ -78,7 +78,12 @@ public class LokiLogService {
                 log.error(Arrays.toString(e.getStackTrace()));
             }
 
-            if (response != null && !response.getData().getResult().isEmpty()) {
+            if(response == null) {
+                log.info("Запрос к API Loki вернул пустой ответ проверьте корректность введенных значений");
+                break;
+            }
+
+            if (!response.getData().getResult().isEmpty()) {
                 List<Map.Entry<String, List<String>>> allEntries = new ArrayList<>();
 
                 for (ResultDTO result : response.getData().getResult()) {
