@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ExecutLogService{
+public class ExecuteLogService {
     private final LokiRequestDTOConfig queryParamsBuilder;
 
     private final LokiLogService logService;

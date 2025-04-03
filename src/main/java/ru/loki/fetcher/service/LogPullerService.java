@@ -9,11 +9,9 @@ import ru.loki.fetcher.config.LokiRequestDTOConfig;
 import ru.loki.fetcher.dto.LokiRequestDTO;
 import ru.loki.fetcher.dto.LokiResponseDTO;
 import ru.loki.fetcher.dto.instance.InstanceResponseDTO;
-import ru.loki.fetcher.dto.logs.LogsResponseDTO;
 import ru.loki.fetcher.feign.LokiLogsFeignClient;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,7 +21,7 @@ public class LogPullerService {
     private final LokiRequestDTOConfig queryParamsBuilder;
     private final ObjectMapper objectMapper;
     private final LokiLogsFeignClient lokiClient;
-    private final ExecutLogService executLogService;
+    private final ExecuteLogService executeLogService;
 
     private String getInstances() {
         LokiRequestDTO requestDTO = LokiRequestDTO.create(queryParamsBuilder);
@@ -65,7 +63,7 @@ public class LogPullerService {
                 log.error("Было не найдено не одного инстанса для сбора логов");
                 throw new RuntimeException();
             }
-            executLogService.executeLogs(incstancies);
+            executeLogService.executeLogs(incstancies);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
