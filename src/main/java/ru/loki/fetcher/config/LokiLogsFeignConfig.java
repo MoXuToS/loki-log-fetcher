@@ -31,7 +31,7 @@ public class LokiLogsFeignConfig {
     }
 
     @Bean
-    Request.Options zabbixFeignOptions() {
+    Request.Options lokiFeignOptions() {
         return new Request.Options(
                 5000,
                 10000
