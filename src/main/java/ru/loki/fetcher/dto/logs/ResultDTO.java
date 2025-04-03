@@ -1,4 +1,4 @@
-package ru.loki.fetcher.dto;
+package ru.loki.fetcher.dto.logs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,24 +1,25 @@
 package ru.loki.fetcher.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.loki.fetcher.config.LokiRequestDTOConfig;
 import ru.loki.fetcher.dto.LokiRequestDTO;
 import ru.loki.fetcher.dto.LokiResponseDTO;
-import ru.loki.fetcher.dto.ResultDTO;
+import ru.loki.fetcher.dto.logs.LogsResponseDTO;
+import ru.loki.fetcher.dto.logs.ResultDTO;
 import ru.loki.fetcher.feign.LokiLogsFeignClient;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class LokiLogService {
     private final LokiLogsFeignClient lokiClient;
-    private final LokiRequestDTOConfig queryParamsBuilder;
     private final ObjectMapper objectMapper;
     private final FileSaveService fileSaveService;
 
@@ -51,26 +52,36 @@ public class LokiLogService {
     }
 
 
-    public void getLogs() {
-        LokiRequestDTO queryParams = LokiRequestDTO.create(queryParamsBuilder);
-        log.info("Выполняется получение логов сервиса {} c {} по {}",
-                queryParams.getApplication(), queryParams.getStartTime(), queryParams.getEndTime());
+    public void getLogs(LokiRequestDTO queryParams) {
+        try {
+            fileSaveService.createFolder(queryParams.getSystem() + "_logs_" +
+                    queryParams.getStartTime().toString().substring(0, 10));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        queryParams.setPodPattern(queryParams.getApplication() + "-.*");
+        AtomicInteger retries = new AtomicInteger(0);
+        int currentRetries = retries.incrementAndGet();
+        log.info("Выполняется получение логов сервиса {} c инстанса {} c {} по {}",
+                queryParams.getApplication(), queryParams.getInstance(),
+                queryParams.getStartTime(), queryParams.getEndTime());
+
         queryParams.setTimestamp(queryParams.getStartAsUnix());
-        String filename = FileSaveService.clearFilename(String.format("log_%s_%s_%s.log",
-                queryParams.getApplication(),
+        String filename = FileSaveService.clearFilename(String.format("%s_%s-%s",
+                queryParams.getInstance(),
                 queryParams.getStartTime(),
                 queryParams.getEndTime()));
+        // Используется для Логирования
+        long startTimestamp = queryParams.getStartAsUnix();
+        long timeRange = queryParams.getEndAsUnix() - queryParams.getStartAsUnix();
 
         while (queryParams.getStartAsUnix() < queryParams.getEndAsUnix()) {
-            LokiResponseDTO response = null;
+            LokiResponseDTO<LogsResponseDTO> response = null;
             try {
                 String lokiResponse = fetchLogs(queryParams);
                 try {
-
-                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    response = objectMapper.readValue(lokiResponse, LokiResponseDTO.class);
+                    response = objectMapper.readValue(lokiResponse,
+                            new TypeReference<LokiResponseDTO<LogsResponseDTO>>() {});
                 } catch (Exception e) {
                     log.error("Ошибка: {}", e.toString());
                 }
@@ -79,11 +90,17 @@ public class LokiLogService {
             }
 
             if(response == null) {
-                log.info("Запрос к API Loki вернул пустой ответ проверьте корректность введенных значений");
+                currentRetries = retries.incrementAndGet();
+                if(currentRetries == 3)
+                    break;
+                log.warn("Обращение к API Loki не успешно, осталось попыток {}", 3 - currentRetries);
+            }
+            else if(response.getData().getResult().isEmpty()) {
+                log.info("По введенным параметрам не удалось ничего найти");
                 break;
             }
-
-            if (!response.getData().getResult().isEmpty()) {
+            else {
+                retries.set(0);
                 List<Map.Entry<String, List<String>>> allEntries = new ArrayList<>();
 
                 for (ResultDTO result : response.getData().getResult()) {
@@ -99,7 +116,7 @@ public class LokiLogService {
                 for (Map.Entry<String, List<String>> entry : allEntries) {
                     List<String> logData = entry.getValue();
                     fileSaveService.saveToFile(
-                            String.format("\"%s\" | \"%s\"", entry.getKey(), logData.get(1)),
+                            String.format(logData.get(1)),
                             filename
                     );
                 }
@@ -107,10 +124,11 @@ public class LokiLogService {
                     break;
 
                 queryParams.setTimestamp(Long.parseLong(allEntries.get(allEntries.size() - 1).getValue().get(0)) + 1);
-            }
 
-            queryParams.setStartTime(TimeService.getLocalDateTime(queryParams.getTimestamp()));
-            log.info("Текущий прогресс: {}", queryParams.getStartTime());
+                queryParams.setStartTime(TimeService.getLocalDateTime(queryParams.getTimestamp()));
+                double progress = (double) (queryParams.getTimestamp() - startTimestamp) / timeRange * 100;
+                log.info("Текущий прогресс: {}%", String.format("%.2f", progress));
+            }
         }
     }
 }

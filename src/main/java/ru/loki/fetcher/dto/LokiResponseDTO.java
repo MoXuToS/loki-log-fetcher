@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @JsonInclude
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LokiResponseDTO {
+public class LokiResponseDTO<T> {
     private String status;
-    private ResponseDataDTO data;
+    private T data;
 }

@@ -1,4 +1,4 @@
-package ru.loki.fetcher.dto;
+package ru.loki.fetcher.dto.logs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseDataDTO {
+public class LogsResponseDTO {
     private String resultType;
     private List<ResultDTO> result;
 }

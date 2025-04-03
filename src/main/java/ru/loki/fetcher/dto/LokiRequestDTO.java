@@ -12,14 +12,14 @@ import java.time.ZoneId;
  * DTO для передачи параметров запроса к Loki.
  */
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class LokiRequestDTO {
     private String system;
     private String env;
     private int limit;
     private String application;
     private String direction;
-    private String podPattern;
+    private String Instance;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private long timestamp;
@@ -50,11 +50,25 @@ public class LokiRequestDTO {
      */
     public String getQueryString() {
         return String.format(
-                "{system=\"%s\", env=\"%s\", container=\"%s\", pod=~\".*\"}",
+                "{system=\"%s\", env=\"%s\", container=\"%s\", pod=~\"%s\"}",
+                this.getSystem(),
+                this.getEnv(),
+                this.getApplication(),
+                this.getInstance()
+        );
+    }
+
+    public String getInstanceQuery() {
+        return String.format(
+                "{system=\"%s\", env=\"%s\", container=\"%s\"}",
                 this.getSystem(),
                 this.getEnv(),
                 this.getApplication()
         );
+    }
+
+    public LokiRequestDTO copy() {
+        return this.toBuilder().build();
     }
 
     /**

@@ -5,11 +5,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 @Service
 @NoArgsConstructor
+@Setter
 public class FileSaveService {
+    private String folder;
 
     /**
      * Метод для очистки строки от запрещенных символов Windows
@@ -17,7 +20,17 @@ public class FileSaveService {
      * @param input Строка названия файла
      */
     public static String clearFilename(String input) {
-        return input.replaceAll("[\\\\/:*?\"<>|]", "_"); // Замена запрещенных символов на _
+        return input.replaceAll("[\\\\/:*?.\"<>|]", "_"); // Замена запрещенных символов на _
+    }
+
+    /**
+     * Создаем папку под логи
+     *
+     * @param folderName Название папки
+     */
+    public void createFolder(String folderName) throws IOException {
+        this.setFolder(folderName);
+        Files.createDirectories(Paths.get(folder));
     }
 
     /**
@@ -29,7 +42,7 @@ public class FileSaveService {
     public void saveToFile(String content, String filename) {
         try {
             Files.write(
-                    Paths.get(filename),
+                    Paths.get(folder + "/" + filename + ".log"),
                     (content + System.lineSeparator()).getBytes(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
