@@ -54,8 +54,10 @@ public class LokiLogService {
 
     public void getLogs(LokiRequestDTO queryParams) {
         try {
-            fileSaveService.createFolder(queryParams.getSystem() + "_logs_" +
-                    queryParams.getStartTime().toString().substring(0, 10));
+            fileSaveService.createFolder(String.format("%s_%s_logs_%s",
+                    queryParams.getSystem(),
+                    queryParams.getApplication(),
+                    queryParams.getStartTime().toString().substring(0, 10)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
