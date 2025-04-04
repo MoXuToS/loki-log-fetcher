@@ -1,16 +1,20 @@
 package ru.loki.fetcher.service;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @NoArgsConstructor
 @Setter
+@Slf4j
 public class FileSaveService {
     private String folder;
 
@@ -33,6 +37,10 @@ public class FileSaveService {
         Files.createDirectories(Paths.get(folder));
     }
 
+    public String clearContent(String str) {
+        return str.replaceAll("%[A-Fa-f0-9]{2}", "");
+    }
+
     /**
      * Метод для сохранения данных в файл
      *
@@ -41,14 +49,26 @@ public class FileSaveService {
      */
     public void saveToFile(String content, String filename) {
         try {
-            Files.write(
-                    Paths.get(folder + "/" + filename + ".log"),
-                    (content + System.lineSeparator()).getBytes(),
+            if (content == null) {
+                throw new IllegalArgumentException("Нечего сохранять в файл");
+            }
+            String filePath = folder + "/" + filename + ".log";
+
+            // Кириллица в запросах
+            String sanitizedContent = content.replaceAll("%[A-Fa-f0-9]{2}", "");
+
+            try (BufferedWriter writer = Files.newBufferedWriter(
+                    Paths.get(filePath),
+                    StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
-            );
-        } catch (IOException e) {
-            System.err.println("Ошибка: " + e.getMessage());
+            )) {
+                writer.write(content);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            log.error("Ошибка: {}", filename, e);
+            throw new RuntimeException(e);
         }
     }
 }

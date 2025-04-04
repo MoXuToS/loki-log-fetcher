@@ -7,6 +7,7 @@ import ru.loki.fetcher.config.LokiRequestDTOConfig;
 import ru.loki.fetcher.dto.LokiRequestDTO;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.concurrent.CompletableFuture;
@@ -38,8 +39,10 @@ public class ExecuteLogService {
                         try {
                             logService.getLogs(ThreadParams);
                         } catch (Exception e) {
-                            log.error("Возникла ошибка при обработке запроса к {}", instance);
+                            log.error("Возникла ошибка при обработке запроса к {} \n {}", instance,
+                                    e.getStackTrace());
                         }
+                        log.info("Сбор логов для {} завершен", instance);
                     },
                     executeService
             );

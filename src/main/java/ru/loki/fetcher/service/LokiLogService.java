@@ -117,10 +117,16 @@ public class LokiLogService {
 
                 for (Map.Entry<String, List<String>> entry : allEntries) {
                     List<String> logData = entry.getValue();
-                    fileSaveService.saveToFile(
-                            String.format(logData.get(1)),
-                            filename
-                    );
+                    try {
+                        logData.set(1, fileSaveService.clearContent(logData.get(1)));
+                        fileSaveService.saveToFile(
+                                String.format(logData.get(1)),
+                                filename
+                        );
+                    } catch (Exception e) {
+                        log.warn("Возникла ошибка при попытке сохранить в файл");
+                        log.warn("Ошибка при сохранение {}", logData.get(1));
+                    }
                 }
                 if(allEntries.size() < queryParams.getLimit())
                     break;

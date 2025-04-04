@@ -31,9 +31,9 @@ public class LogPullerService {
             String instanceQuery = requestDTO.getInstanceQuery();
             Object response = lokiClient.getInstances(
                     instanceQuery,
-                    // Вычитаем 12 часов, чтобы гарантировано получить все инстансы
+                    // Вычитаем 6 часов, чтобы гарантировано получить все инстансы
                     // Какой-то прикол API loki для маленьких time range
-                    requestDTO.getStartAsUnix() - 21600,
+                    requestDTO.getStartAsUnix() - 21_600_000_000_000L,
                     requestDTO.getEndAsUnix()
             );
             log.info("Успешно получили список инстансов");
