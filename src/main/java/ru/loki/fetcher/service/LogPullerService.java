@@ -12,7 +12,9 @@ import ru.loki.fetcher.dto.instance.InstanceResponseDTO;
 import ru.loki.fetcher.feign.LokiLogsFeignClient;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -29,7 +31,9 @@ public class LogPullerService {
             String instanceQuery = requestDTO.getInstanceQuery();
             Object response = lokiClient.getInstances(
                     instanceQuery,
-                    requestDTO.getStartAsUnix(),
+                    // Вычитаем 12 часов, чтобы гарантировано получить все инстансы
+                    // Какой-то прикол API loki для маленьких time range
+                    requestDTO.getStartAsUnix() - 21600,
                     requestDTO.getEndAsUnix()
             );
             log.info("Успешно получили список инстансов");
@@ -54,10 +58,15 @@ public class LogPullerService {
                 log.error("Ошибка: {}", e.toString());
             }
             List<String> incstancies = new ArrayList<String>();
+            Set<String> uniquePods = new HashSet<String>();
             assert response != null;
             if(!response.getData().isEmpty())
                 for(InstanceResponseDTO instance : response.getData()) {
-                    incstancies.add(instance.getPod());
+                    String pod = instance.getPod();
+                    if(!uniquePods.contains(pod)) {
+                        incstancies.add(pod);
+                        uniquePods.add(pod);
+                    }
                 }
             else {
                 log.error("Было не найдено не одного инстанса для сбора логов");
