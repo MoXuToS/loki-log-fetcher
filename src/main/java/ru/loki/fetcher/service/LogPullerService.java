@@ -60,7 +60,7 @@ public class LogPullerService {
             List<String> incstancies = new ArrayList<String>();
             Set<String> uniquePods = new HashSet<String>();
             assert response != null;
-            if(!response.getData().isEmpty())
+            if(!response.getData().isEmpty()) {
                 for(InstanceResponseDTO instance : response.getData()) {
                     String pod = instance.getPod();
                     if(!uniquePods.contains(pod)) {
@@ -68,11 +68,11 @@ public class LogPullerService {
                         uniquePods.add(pod);
                     }
                 }
+                executeLogService.executeLogs(incstancies);
+            }
             else {
                 log.error("Было не найдено не одного инстанса для сбора логов");
-                throw new RuntimeException();
             }
-            executeLogService.executeLogs(incstancies);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
