@@ -64,7 +64,6 @@ public class FileSaveService {
                     StandardOpenOption.APPEND
             )) {
                 writer.write(content);
-                writer.newLine();
             }
         } catch (Exception e) {
             log.error("Ошибка: {}", filename, e);
