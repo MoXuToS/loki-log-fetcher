@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@Getter
-@Setter
 @JsonInclude
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResultDTO {

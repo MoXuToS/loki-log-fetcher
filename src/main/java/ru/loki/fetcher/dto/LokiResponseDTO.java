@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-@Getter
-@Setter
 @JsonInclude
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LokiResponseDTO<T> {
