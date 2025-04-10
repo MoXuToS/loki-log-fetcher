@@ -54,9 +54,6 @@ public class FileSaveService {
             }
             String filePath = folder + "/" + filename + ".log";
 
-            // Кириллица в запросах
-            String sanitizedContent = content.replaceAll("%[A-Fa-f0-9]{2}", "");
-
             try (BufferedWriter writer = Files.newBufferedWriter(
                     Paths.get(filePath),
                     StandardCharsets.UTF_8,
