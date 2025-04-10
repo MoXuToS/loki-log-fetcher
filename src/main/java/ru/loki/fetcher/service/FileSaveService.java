@@ -54,6 +54,11 @@ public class FileSaveService {
             }
             String filePath = folder + "/" + filename + ".log";
 
+            String separator = "\n";
+            if (!content.endsWith(separator)) {
+                content += separator;
+            }
+
             try (BufferedWriter writer = Files.newBufferedWriter(
                     Paths.get(filePath),
                     StandardCharsets.UTF_8,
