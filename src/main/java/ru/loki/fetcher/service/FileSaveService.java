@@ -2,6 +2,7 @@ package ru.loki.fetcher.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -78,14 +79,20 @@ public class FileSaveService {
 
             Path filePath = dirPath.resolve(filename + ".log");
 
-            // Автоматическое добавление переноса строки
-            byte[] separator = System.lineSeparator().getBytes(StandardCharsets.UTF_8);
-            byte[] dataWithSeparator = ByteBuffer.allocate(content.length + separator.length)
-                    .put(content)
-                    .put(separator)
-                    .array();
+            byte[] separator = "\n".getBytes(StandardCharsets.UTF_8);
 
-            Files.write(filePath, dataWithSeparator, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            boolean needsSeparator = !(content.length > 0 && content[content.length - 1] == '\n');
+
+            try (OutputStream out = Files.newOutputStream(
+                    filePath,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+            )) {
+                out.write(content);
+                if (needsSeparator) {
+                    out.write(separator);
+                }
+            }
 
         } catch (IOException e) {
             log.error("Ошибка сохранения файла: {}", filename, e);
