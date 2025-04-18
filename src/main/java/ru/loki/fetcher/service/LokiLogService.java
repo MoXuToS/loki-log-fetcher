@@ -63,7 +63,9 @@ public class LokiLogService {
         }
 
         AtomicInteger retries = new AtomicInteger(0);
+        AtomicInteger globalRetries = new AtomicInteger(0);
         int currentRetries = retries.incrementAndGet();
+        int currentGlobalRetries = globalRetries.incrementAndGet();
         log.info("Выполняется получение логов сервиса {} c инстанса {} c {} по {}",
                 queryParams.getApplication(), queryParams.getInstance(),
                 queryParams.getStartTime(), queryParams.getEndTime());
@@ -92,10 +94,17 @@ public class LokiLogService {
             }
 
             if(response == null) {
-                currentRetries = retries.incrementAndGet();
-                if(currentRetries == 3)
+                if(currentRetries == 3 && currentGlobalRetries == 5)
                     break;
-                log.warn("Обращение к API Loki не успешно, осталось попыток {}", 3 - currentRetries);
+                if(currentRetries < 3) {
+                    currentRetries = retries.incrementAndGet();
+                    log.warn("Обращение к API Loki не успешно, осталось попыток {}", 3 - currentRetries);
+                }
+                else {
+                    currentGlobalRetries = globalRetries.incrementAndGet();
+                    log.warn("Обращение к API Loki опять не успешно, осталось попыток {}", 5 - currentGlobalRetries);
+                    queryParams.setTimestamp(queryParams.getTimestamp() + 1_000_000_000L);
+                }
             }
             else if(response.getData().getResult().isEmpty()) {
                 log.info("По введенным параметрам не удалось ничего найти");
