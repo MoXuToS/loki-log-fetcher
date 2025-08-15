@@ -104,7 +104,7 @@ public class LokiLogService {
                     currentGlobalRetries = globalRetries.incrementAndGet();
                     currentRetries = retries.getAndSet(0);
                     log.warn("Обращение к API Loki опять не успешно, осталось попыток {}", 5 - currentGlobalRetries);
-                    queryParams.setTimestamp(queryParams.getTimestamp() + 5_000_000_000L);
+                    queryParams.setTimestamp(queryParams.getTimestamp() + 560000_000_000_000L);
                 }
             }
             else if(response.getData().getResult().isEmpty()) {

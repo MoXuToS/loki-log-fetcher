@@ -4,17 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.loki.fetcher.config.LokiRequestDTOConfig;
 import ru.loki.fetcher.dto.LokiRequestDTO;
 import ru.loki.fetcher.dto.LokiResponseDTO;
 import ru.loki.fetcher.dto.instance.InstanceResponseDTO;
 import ru.loki.fetcher.feign.LokiLogsFeignClient;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -24,7 +23,10 @@ public class LogPullerService {
     private final ObjectMapper objectMapper;
     private final LokiLogsFeignClient lokiClient;
     private final ExecuteLogService executeLogService;
-
+    
+    @Value("${loki.query.pod:#{null}}")
+    private String podName;
+    
     private String getInstances() {
         LokiRequestDTO requestDTO = LokiRequestDTO.create(queryParamsBuilder);
         try {
@@ -57,18 +59,27 @@ public class LogPullerService {
             } catch (Exception e) {
                 log.error("Ошибка: {}", e.toString());
             }
-            List<String> incstancies = new ArrayList<String>();
+            List<String> instances = new ArrayList<String>();
             Set<String> uniquePods = new HashSet<String>();
-            assert response != null;
+            Assert.notNull(response, "Получен пустой ответ от Loki");
             if(!response.getData().isEmpty()) {
                 for(InstanceResponseDTO instance : response.getData()) {
                     String pod = instance.getPod();
                     if(!uniquePods.contains(pod)) {
-                        incstancies.add(pod);
+                        instances.add(pod);
                         uniquePods.add(pod);
                     }
                 }
-                executeLogService.executeLogs(incstancies);
+                if (podName == null)
+                  executeLogService.executeLogs(instances);
+                else {
+                  for (String instance : instances) {
+                    if (instance.equals(podName)) {
+                      executeLogService.executeLogs(Collections.singletonList(instance));
+                      break;
+                    }
+                  }
+                }
             }
             else {
                 log.error("Было не найдено не одного инстанса для сбора логов");
