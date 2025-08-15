@@ -1,9 +1,9 @@
 loki:
-  address: http://10.125.9.37:3100
+  address: http://localhost:3100
   query:
-    system: passport-rf
-    env: uat
-    application: passport-rf-external-backend
+    system: test
+    env: test
+    application: test
 # Максимум 5000, loki не позволяет вытащить больше
     batchSize: 1000
     from: '2025-07-21 11:47:25'
