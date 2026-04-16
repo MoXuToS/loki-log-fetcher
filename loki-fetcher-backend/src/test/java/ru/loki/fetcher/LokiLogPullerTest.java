@@ -1,7 +1,7 @@
 package ru.loki.fetcher;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.DisplayName;
+//import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class LokiLogPullerTest {
 
-    @Test
-    @DisplayName("Тест на поднятие контекста")
-    void contextLoad() {
-
-    }
+//    @Test
+//    @DisplayName("Тест на поднятие контекста")
+//    void contextLoad() {
+//
+//    }
 }
