@@ -2,11 +2,11 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.kotlin.dsl.configure
 
 plugins {
-    alias(libs.plugins.spring.boot)
     alias(libs.plugins.asciidoctor)
     alias(libs.plugins.spring.dependency.management)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
+    `java-library`
     alias(libs.plugins.ben.manes.versions)
 }
 
@@ -16,29 +16,22 @@ repositories {
 
 extra["snippetsDir"] = file("build/generated-snippets")
 
-
 configure<DependencyManagementExtension> {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${libs.versions.spring.cloud.get()}")
         mavenBom("org.springframework.boot:spring-boot-dependencies:${libs.versions.spring.boot.get()}")
     }
 }
 
+
 dependencies {
-    implementation(libs.spring.boot.configuration.processor)
     implementation(libs.spring.boot.starter.validation)
-    implementation(libs.spring.boot.starter)
-    implementation(libs.spring.cloud.starter.openfeign)
-    implementation(libs.jakarta.validation.api)
+    implementation(libs.spring.http.client)
+    implementation(libs.webflux)
+    implementation(libs.reactor.netty.http)
     implementation(libs.jackson.databind)
-    implementation(libs.spring.cloud.starter.loadbalancer)
-    implementation(libs.jackson.datatype.jsr310)
+    implementation(libs.jakarta.validation.api)
     compileOnly(libs.lombok)
     compileOnly(libs.mapstruct)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.mockito.junit.jupiter)
-    testImplementation(libs.spring.boot.starter.test)
 
     annotationProcessor(libs.lombok)
     annotationProcessor(libs.mapstruct.processor)

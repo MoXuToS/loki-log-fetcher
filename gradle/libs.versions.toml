@@ -7,6 +7,8 @@ cloud-dependecy = "1.1.7"
 asciidoctor = "4.0.5"
 kotlin = "2.0.20"
 ben-manes = "0.45.0"
+webflux = "7.0.7"
+reactor-netty-http = "1.3.5"
 
 [libraries]
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
@@ -16,6 +18,10 @@ spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cl
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
+spring-http-client = { module = "org.springframework.boot:spring-boot-http-client" }
+webflux = { module = "org.springframework:spring-webflux", version.ref = "webflux" }
+reactor-netty-http = { module = "io.projectreactor.netty:reactor-netty-http", version.ref = "reactor-netty-http" }
+
 mockito-core = { module = "org.mockito:mockito-core" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }

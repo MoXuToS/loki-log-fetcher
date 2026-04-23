@@ -2,12 +2,12 @@ plugins {
     id("java")
 }
 
-group = "ru.loki.fetcher"
+group = "moxutos.loki.fetcher"
 version = "3.0.0-migrate-gradlew"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
