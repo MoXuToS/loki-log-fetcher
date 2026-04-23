@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Properties для настройки http client для взаимодействия с Grafana Loki.
+ */
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "http.client.loki")
