@@ -2,11 +2,10 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.kotlin.dsl.configure
 
 plugins {
+    id("java")
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.asciidoctor)
     alias(libs.plugins.spring.dependency.management)
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.ben.manes.versions)
 }
 
@@ -33,6 +32,7 @@ dependencies {
     implementation(libs.jackson.databind)
     implementation(libs.spring.cloud.starter.loadbalancer)
     implementation(libs.jackson.datatype.jsr310)
+    implementation(project(":loki-client"))
     compileOnly(libs.lombok)
     compileOnly(libs.mapstruct)
     testImplementation(libs.mockito.core)

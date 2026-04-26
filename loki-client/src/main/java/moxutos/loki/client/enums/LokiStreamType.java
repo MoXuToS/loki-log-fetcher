@@ -1,14 +1,19 @@
 package moxutos.loki.client.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Наименование потока с ответом от loki.
+ */
 @Getter
 @AllArgsConstructor
 public enum LokiStreamType {
 
-    STDOUT("stdout"),
-    STDERR("stderr");
+    @JsonProperty("stdout")
+    STDOUT,
 
-    private final String value;
+    @JsonProperty("stderr")
+    STDERR
 }

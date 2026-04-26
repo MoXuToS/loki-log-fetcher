@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 import reactor.core.publisher.Mono;
 
+/**
+ * WebClient для создания запросов к loki.
+ */
 public interface LokiHttpClientApi {
 
     /**

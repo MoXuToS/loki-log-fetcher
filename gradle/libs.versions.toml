@@ -1,40 +1,59 @@
 [versions]
+apache-commons = "4.5.0"
+asciidoctor = "4.0.5"
+ben-manes = "0.45.0"
+cloud-dependecy = "1.1.7"
+dependency-analysis = "3.9.0"
+jackson = "2.21"
+jetbrains = "26.1.0"
+lombok = "1.18.42"
+mapstruct = "1.6.3"
+micrometer = "1.16.4"
+netty = "4.2.12.Final"
+reactor-core = "3.8.4"
+reactor-netty-core = "1.3.4"
+reactor-netty-http = "1.3.5"
 spring-boot = "4.0.5"
 spring-cloud = "2025.1.1"
-mapstruct = "1.6.3"
-lombok = "1.18.42"
-cloud-dependecy = "1.1.7"
-asciidoctor = "4.0.5"
-kotlin = "2.0.20"
-ben-manes = "0.45.0"
-webflux = "7.0.7"
-reactor-netty-http = "1.3.5"
 
 [libraries]
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
-spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
-jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
+commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "apache-commons" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
-spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
-spring-http-client = { module = "org.springframework.boot:spring-boot-http-client" }
-webflux = { module = "org.springframework:spring-webflux", version.ref = "webflux" }
-reactor-netty-http = { module = "io.projectreactor.netty:reactor-netty-http", version.ref = "reactor-netty-http" }
-
-mockito-core = { module = "org.mockito:mockito-core" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
+jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
+jetbrains-annotation = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
-mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter" }
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+micrometer-observation = { module = "io.micrometer:micrometer-observation", version.ref = "micrometer" }
+mockito-core = { module = "org.mockito:mockito-core" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter" }
+netty-handler = { module = "io.netty:netty-handler", version.ref = "netty" }
+netty-transport = { module = "io.netty:netty-transport", version.ref = "netty" }
+reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor-core" }
+reactor-netty-core = { module = "io.projectreactor.netty:reactor-netty-core", version.ref = "reactor-netty-core" }
+reactor-netty-http = { module = "io.projectreactor.netty:reactor-netty-http", version.ref = "reactor-netty-http" }
+spring-beans = { module = "org.springframework:spring-beans" }
+spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure"}
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-context = { module = "org.springframework:spring-context" }
+spring-core = { module = "org.springframework:spring-core" }
+spring-web = { module = "org.springframework:spring-web" }
+webclient = { module = "org.springframework.boot:spring-boot-webclient" }
+webflux = { module = "org.springframework:spring-webflux" }
 
 [plugins]
-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "cloud-dependecy" }
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 asciidoctor = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "cloud-dependecy" }

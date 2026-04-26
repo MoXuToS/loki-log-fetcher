@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import moxutos.loki.client.enums.LokiStreamType;
 
+/**
+ * Метаданные ответа от loki.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

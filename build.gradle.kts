@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    alias(libs.plugins.dependency.analysis) apply false
 }
 
 group = "moxutos.loki.fetcher"

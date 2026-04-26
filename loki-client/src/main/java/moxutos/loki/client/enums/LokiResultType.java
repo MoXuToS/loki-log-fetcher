@@ -1,14 +1,19 @@
 package moxutos.loki.client.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Тип ответа от loki.
+ */
 @Getter
 @AllArgsConstructor
 public enum LokiResultType {
 
-    MATRIX("matrix"),
-    STREAMS("streams");
+    @JsonProperty("matrix")
+    MATRIX,
 
-    private final String resultType;
+    @JsonProperty("streams")
+    STREAMS
 }

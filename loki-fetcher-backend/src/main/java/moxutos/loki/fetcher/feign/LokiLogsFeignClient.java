@@ -10,25 +10,6 @@ public interface LokiLogsFeignClient {
 
     /**
      * Метод по отправки запроса к loki
-     * для получения логов
-     *
-     * @param query фильтры запроса
-     * @param start начальная временная точка сбора логов
-     * @param end конечная дата сбора логов
-     * @param limit количество строчек логов
-     * @param direction порядок сортировки логов
-     */
-    @GetMapping(value = "/loki/api/v1/query_range", produces = "application/json")
-    String getLogs(
-            @RequestParam("query") String query,
-            @RequestParam("start") long start,
-            @RequestParam("end") long end,
-            @RequestParam("limit") int limit,
-            @RequestParam("direction") String direction
-    );
-
-    /**
-     * Метод по отправки запроса к loki
      * для получения названия пода/ip инстанса
      *
      * @param query фильтры запроса

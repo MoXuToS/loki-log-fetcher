@@ -1,13 +1,16 @@
 package moxutos.loki.client.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Статус ответа от loki.
+ */
 @Getter
 @AllArgsConstructor
 public enum LokiStatus {
 
-    SUCCESS("success");
-
-    private final String status;
+    @JsonProperty("success")
+    SUCCESS
 }

@@ -6,5 +6,14 @@ loki:
     application: test
 # Максимум 5000, loki не позволяет вытащить больше
     batchSize: 1000
-    from: '2025-07-21 11:47:25'
-    end: '2025-07-21 11:47:35'
+    from: '2026-04-26 11:40:25'
+    end: '2026-04-27 11:47:35'
+http:
+  client:
+    loki:
+      datasources:
+        test:
+          url: http://localhost:3100
+logging:
+  level:
+    org.springframework.web: DEBUG
