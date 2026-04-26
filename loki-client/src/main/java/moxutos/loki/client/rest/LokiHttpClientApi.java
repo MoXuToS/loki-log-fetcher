@@ -28,4 +28,19 @@ public interface LokiHttpClientApi {
             @RequestParam("limit") int limit,
             @RequestParam("direction") String direction
     );
+
+    /**
+     * Метод по отправки запроса к loki
+     * для получения набора данных
+     *
+     * @param query фильтры запроса
+     * @param start начальная временная точка сбора логов
+     * @param end конечная дата сбора логов
+     */
+    @GetExchange(value = "/loki/api/v1/series")
+    Mono<String> getSeries(
+            @RequestParam("match[]") String query,
+            @RequestParam("start") long start,
+            @RequestParam("end") long end
+    );
 }

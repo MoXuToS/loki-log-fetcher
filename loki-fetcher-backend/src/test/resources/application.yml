@@ -1,10 +1,20 @@
 loki:
-  address: http://localhost:3100
   query:
-    system: system
-    env: env
-    application: backend-app
-# Максимум 5000, loki не позволяет вытащить больше
-    batchSize: 100
-    from: '2025-03-14 07:00:00'
-    end: '2025-03-14 21:00:00'
+    system: test
+    env: test
+    application: test
+    # Максимум 5000, loki не позволяет вытащить больше
+    batchSize: 1000
+    from: '2026-04-26 11:40:25'
+    end: '2026-04-27 11:47:35'
+http:
+  client:
+    loki:
+      datasources:
+        test:
+          url: http://localhost:3100
+logging:
+  level:
+    org.springframework.web: DEBUG
+server:
+  port: 9000

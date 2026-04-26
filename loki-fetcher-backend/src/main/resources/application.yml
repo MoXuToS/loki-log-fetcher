@@ -1,5 +1,4 @@
 loki:
-  address: http://localhost:3100
   query:
     system: test
     env: test
@@ -17,3 +16,7 @@ http:
 logging:
   level:
     org.springframework.web: DEBUG
+server:
+  port: 9000
+  servlet:
+    context-path: /loki-fetcher

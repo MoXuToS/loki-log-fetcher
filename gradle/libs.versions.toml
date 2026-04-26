@@ -2,9 +2,8 @@
 apache-commons = "4.5.0"
 asciidoctor = "4.0.5"
 ben-manes = "0.45.0"
-cloud-dependecy = "1.1.7"
+spring-dependecy-manager = "1.1.7"
 dependency-analysis = "3.9.0"
-jackson = "2.21"
 jetbrains = "26.1.0"
 lombok = "1.18.42"
 mapstruct = "1.6.3"
@@ -14,7 +13,7 @@ reactor-core = "3.8.4"
 reactor-netty-core = "1.3.4"
 reactor-netty-http = "1.3.5"
 spring-boot = "4.0.5"
-spring-cloud = "2025.1.1"
+openapi-ui = "3.0.3"
 
 [libraries]
 commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "apache-commons" }
@@ -40,14 +39,13 @@ spring-beans = { module = "org.springframework:spring-beans" }
 spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure"}
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
-spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
-spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
 spring-context = { module = "org.springframework:spring-context" }
 spring-core = { module = "org.springframework:spring-core" }
 spring-web = { module = "org.springframework:spring-web" }
+springdoc-openapi-webflux = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "openapi-ui" }
 webclient = { module = "org.springframework.boot:spring-boot-webclient" }
 webflux = { module = "org.springframework:spring-webflux" }
 
@@ -56,4 +54,4 @@ asciidoctor = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" 
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "cloud-dependecy" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependecy-manager" }

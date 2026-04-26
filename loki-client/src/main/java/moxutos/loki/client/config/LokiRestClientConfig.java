@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import moxutos.loki.client.config.properties.LokiClientProperties;
 import moxutos.loki.client.config.properties.LokiInstanceProperties;
 import moxutos.loki.client.core.LokiClientRegistry;
+import moxutos.loki.client.filter.LokiRetryFilter;
 import moxutos.loki.client.rest.LokiHttpClientApi;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -75,7 +76,8 @@ public class LokiRestClientConfig {
         WebClient.Builder builder = WebClient.builder()
                 .baseUrl(cfg.getUrl())
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                .clientConnector(new ReactorClientHttpConnector(httpClient));
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .filter(LokiRetryFilter.createRetryFilter(cfg.getRetry()));
 
         customizers.orderedStream().forEach(c -> c.customize(builder));
         WebClient client = builder.build();

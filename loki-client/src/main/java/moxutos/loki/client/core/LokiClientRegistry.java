@@ -31,7 +31,7 @@ public class LokiClientRegistry {
 
     /**
      * Получить список всех известных источников Loki.
-     * @return
+     * @return все известные источники loki.
      */
     public Set<String> names() {
         return Collections.unmodifiableSet(clients.keySet());
@@ -43,8 +43,8 @@ public class LokiClientRegistry {
 
     /**
      * Проверить если ты такой источник loki.
-     * @param name
-     * @return
+     * @param name наименование источника.
+     * @return есть ли такой источник данных.
      */
     public boolean contains(String name) {
         return clients.containsKey(name);
